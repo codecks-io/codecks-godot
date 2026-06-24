@@ -15,10 +15,11 @@ Requires **Godot 4.x** (developed against 4.2).
 1. Copy the `addons/codecks_bug_reporter/` folder into the `addons/` folder of your project.
 2. Open **Project > Project Settings > Plugins** and enable **Codecks Bug & Feedback Reporter**.
 
-Enabling the plugin does three things for you:
+Enabling the plugin does the following for you:
 
 - registers the `codecks/report_token` project setting (visible under **Project > Project Settings**),
-- registers the `Codecks` autoload singleton, the runtime API your game calls into, and
+- registers the `Codecks` autoload singleton, the runtime API your game calls into,
+- registers a game-wide hotkey (default **F10**) and the `CodecksOverlay` autoload so QA and players can summon the report form from anywhere in a running game — no open-button to wire yourself (see **Open from anywhere** below), and
 - turns on Godot's engine file logging so the optional diagnostics attachment can include a log (it leaves a custom log path you've configured alone).
 
 Once enabled, open the `main.tscn` scene at the project root — it contains a default layout and a sample setup for you to check out.
@@ -34,6 +35,17 @@ The demo scene already provides the UI and the wiring you need to get going. To 
 If everything works, you should see a card pop up in your Codecks just moments later, with the screenshot attached. On a successful send the form shows a brief confirmation and closes itself; on a failure it stays open with a specific, actionable error message (and the same reason is printed to the Output panel) so you can tell at a glance which step broke — a wrong token, a network problem, or a rejected attachment upload.
 
 The form collects a description, a severity (defaulting to **Low** so a report someone bothered to file never lands untriaged), an optional email, and a single **"Include a screenshot and diagnostics to help fix this"** toggle. That toggle is on by default; when ticked it attaches a screenshot plus a plain-text file with recent log output and basic diagnostics (OS, Godot version, GPU, resolution, locale). Untick it to send a text-only report with no attachments.
+
+### Open from anywhere (hotkey)
+
+Once the plugin is enabled, players can press **F10** anywhere in the running game to pop the report form over whatever scene is on screen — you don't have to add an open-button. Pressing the key again hides it; the form also closes itself on submit or Cancel.
+
+This is fully configurable and opt-in:
+
+- **Rebind the key:** open **Project > Project Settings > Input Map** and change the `codecks_open_report` action to whatever key you like.
+- **Disable it entirely:** set **Project > Project Settings > Codecks > Hotkey Enabled** (`codecks/hotkey_enabled`) to `false`. When disabled the overlay listens for no input at all, so it can never collide with your game's own controls.
+
+The hotkey overlay reuses the exact same form (`bug_report_form.tscn`) the demo button opens, so it stays consistent with any styling changes you make, and it coexists with a button you wire yourself — each path manages its own form, so you never get two stacked overlays.
 
 ### Calling it from code
 
