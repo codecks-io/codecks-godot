@@ -1,0 +1,25 @@
+# Godot 4.x editor cache and imported resources
+.godot/
+
+# Exported builds
+/build/
+/export/
+/dist/
+*.exe
+*.pck
+*.zip
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+
+# Local tooling / scratch
+CLAUDE.md
+.claude/
+.mcp.json
+.cursor/
+.aider*
+tmp/
+*.log
+/dist/
+serve-addon.js
